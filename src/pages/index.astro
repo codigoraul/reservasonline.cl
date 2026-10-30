@@ -1,0 +1,185 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Pricing from '../components/Pricing.astro';
+import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+import { site, whatsappLink } from '../data/site';
+
+const audience = [
+  {
+    title: 'Independientes',
+    icon: 'user',
+    img: '/img/barberia.jpg',
+    alt: 'Peluquera atendiendo a un cliente en su local',
+    text: 'Psicólogos, kinesiólogos, nutricionistas, peluqueros, profesores particulares. Tu agenda se llena sola mientras atiendes, sin contestar mensajes para fijar cada hora.',
+  },
+  {
+    title: 'Consultas y centros con equipo',
+    icon: 'building',
+    img: '/img/consulta.jpg',
+    alt: 'Paciente sonriendo durante su atención en una consulta dental',
+    text: 'Clínicas dentales, centros de estética, salones y estudios. Cada profesional tiene su propia agenda y el cliente elige con quién y cuándo.',
+  },
+  {
+    title: 'Empresas con servicios por hora',
+    icon: 'briefcase',
+    img: '/img/agenda.jpg',
+    alt: 'Calendario de reservas abierto en un computador',
+    text: 'Canchas, talleres, notarías, asesorías. Ordena la demanda, evita cruces de horario y pierde menos horas por clientes que no llegan.',
+  },
+];
+
+const steps = [
+  {
+    title: 'Configura tu agenda',
+    text: 'Indica tus servicios, cuánto dura cada uno y en qué horarios atiendes.',
+  },
+  {
+    title: 'Comparte tu enlace',
+    text: 'Ponlo en Instagram, en WhatsApp o en tu sitio web. Tus clientes reservan sin escribirte.',
+  },
+  {
+    title: 'Recibe las reservas',
+    text: 'Cada hora confirmada aparece en tu agenda y tu cliente recibe su confirmación por correo.',
+  },
+];
+
+const features = [
+  ['clock', 'Reservas las 24 horas', 'Tus clientes agendan de noche o en fin de semana, sin esperar tu respuesta.'],
+  ['users', 'Agenda por profesional', 'Cada persona del equipo tiene sus horarios, servicios y días libres.'],
+  ['link', 'Enlace propio de reservas', 'Una dirección fácil de compartir que funciona en cualquier celular.'],
+  ['timer', 'Servicios con duración', 'Define cuánto dura cada atención para que las horas no se crucen.'],
+  ['bell', 'Confirmación y recordatorios', 'Tu cliente recibe su reserva por correo y un aviso antes de la hora.'],
+  ['refresh', 'Cambios y cancelaciones', 'El cliente reagenda o anula solo, y el espacio queda libre para otra persona.'],
+  ['calendarx', 'Bloqueos y vacaciones', 'Cierra horarios, feriados o días completos cuando lo necesites.'],
+  ['phone', 'Sin instalar nada', 'Funciona desde el navegador, en computador y en celular.'],
+];
+
+const faqs = [
+  {
+    q: '¿Necesito saber de tecnología?',
+    a: 'No. Defines tus servicios y horarios, y compartes tu enlace. Si prefieres, te acompañamos con la configuración inicial.',
+  },
+  {
+    q: '¿Qué cuenta como profesional?',
+    a: 'Cada persona que tiene agenda propia y recibe reservas. Quien solo administra o atiende el teléfono no cuenta.',
+  },
+  {
+    q: '¿Puedo cambiar de plan más adelante?',
+    a: 'Sí. Cuando tu equipo crezca puedes pasar a un plan con más profesionales. Escríbenos por WhatsApp y lo coordinamos.',
+  },
+  {
+    q: '¿Cómo pago?',
+    a: 'Al contratar te enviamos los datos de pago por WhatsApp. Puedes pagar mensual, trimestral, semestral o anual, y mientras más largo el periodo, menor el valor por mes.',
+  },
+];
+---
+
+<Base
+  title="Sistema de reservas online para profesionales y empresas | Reservas Online"
+  description="Sistema de reservas online para profesionales, independientes y empresas en Chile. Tus clientes agendan solos, las 24 horas. Planes desde $12.000 al mes."
+>
+  <Header />
+  <main id="contenido">
+    <Hero />
+
+    <section class="section audience" id="para-quien">
+      <div class="wrap">
+        <div class="section__head">
+          <h2>Pensado para quien atiende con hora</h2>
+          <p>Si tu trabajo se organiza en una agenda, tus clientes pueden reservar solos.</p>
+        </div>
+        <ul class="pcards">
+          {
+            audience.map((a) => (
+              <li class="pcard">
+                <img src={a.img} alt={a.alt} width="1100" height="733" loading="lazy" decoding="async" />
+                <div class="pcard__body">
+                  <span class="icon-tile icon-tile--grad"><Icon name={a.icon} /></span>
+                  <h3>{a.title}</h3>
+                  <p>{a.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="section tint" id="como-funciona">
+      <div class="wrap">
+        <div class="section__head">
+          <h2>Funcionando en tres pasos</h2>
+        </div>
+        <ol class="steps">
+          {
+            steps.map((s) => (
+              <li>
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <section class="section features" id="funciones">
+      <div class="wrap">
+        <div class="section__head">
+          <h2>Lo que incluye cada plan</h2>
+          <p>Las mismas funciones en todos los planes. Solo cambia cuántos profesionales atiendes.</p>
+        </div>
+        <dl class="feature-list">
+          {
+            features.map(([ic, t, d]) => (
+              <div class="feature">
+                <span class="icon-tile"><Icon name={ic} /></span>
+                <dt>{t}</dt>
+                <dd>{d}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+
+    <Pricing />
+
+    <section class="section faq" id="preguntas">
+      <div class="wrap">
+        <div class="section__head">
+          <h2>Preguntas frecuentes</h2>
+        </div>
+        <div class="faq__list">
+          {
+            faqs.map((f) => (
+              <details>
+                <summary>{f.q}</summary>
+                <p>{f.a}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="wrap">
+        <div class="cta__box">
+          <div>
+            <h2>Empieza a recibir reservas esta semana</h2>
+            <p>Elige tu plan y escríbenos. Si antes quieres ver cómo funciona, prueba la demo.</p>
+          </div>
+          <div class="cta__actions">
+            <a class="btn btn--light" href={whatsappLink('Hola, quiero información de Reservas Online.')} rel="noopener">Contratar por WhatsApp</a>
+            <a class="btn btn--ghost" href={site.demoUrl} rel="noopener">Probar la demo completa</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>

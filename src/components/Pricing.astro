@@ -1,0 +1,101 @@
+---
+import { periods, plans, priceFor, clp } from '../data/plans';
+import { site, whatsappLink } from '../data/site';
+
+const maxDiscount = Math.round(Math.max(...periods.map((p) => p.discount)) * 100);
+const first = periods[0];
+
+const cards = plans.map((p) => ({
+  ...p,
+  prices: Object.fromEntries(periods.map((per) => [per.id, priceFor(p.monthly, per.months, per.discount)])),
+  cta: whatsappLink(`Hola, quiero contratar el plan ${p.name} (mensual) de Reservas Online.`),
+}));
+---
+
+<section class="section pricing" id="planes">
+  <div class="wrap">
+    <div class="section__head">
+      <h2>Planes según cuántos profesionales atiendes</h2>
+      <p>
+        Todos los planes incluyen las mismas funciones. Cambia el precio según el número de profesionales con
+        agenda propia, y bajas el valor mensual si pagas por más tiempo.
+      </p>
+    </div>
+
+    <div class="period" role="group" aria-label="Periodo de pago" id="period">
+      {
+        periods.map((per) => (
+          <button
+            type="button"
+            data-period={per.id}
+            data-label={per.label.toLowerCase()}
+            aria-pressed={per.id === first.id ? 'true' : 'false'}
+          >
+            {per.label}
+            {per.discount > 0 && <small>-{Math.round(per.discount * 100)}%</small>}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="plans" id="plans" data-wa={site.whatsapp}>
+      {
+        cards.map((p) => (
+          <article class:list={['plan', { 'plan--hl': p.highlight }]} data-name={p.name} data-prices={JSON.stringify(p.prices)}>
+            {p.highlight && <span class="plan__badge">Más elegido</span>}
+            <h3 class="plan__name">{p.name}</h3>
+            <p class="plan__pros">{p.professionals}</p>
+            <p class="plan__aud">{p.audience}</p>
+            <div class="plan__price">
+              <span class="plan__amount" data-amount>{clp(p.prices[first.id].perMonth)}</span>
+              <span class="plan__per">al mes</span>
+            </div>
+            <p class="plan__billing" data-billing>Pagas mes a mes.</p>
+            <a class="btn btn--primary btn--block" href={p.cta} rel="noopener" data-cta>
+              Contratar plan {p.name}
+            </a>
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="quote-more">
+      ¿Más de 25 profesionales o varios locales? <a href={whatsappLink('Hola, necesito una cotización de Reservas Online para más de 25 profesionales.')} rel="noopener">Pide una cotización a medida</a>.
+    </p>
+  </div>
+</section>
+
+<script>
+  const periodsEl = document.getElementById('period');
+  const plansEl = document.getElementById('plans');
+  if (periodsEl && plansEl) {
+    const months: Record<string, number> = { mensual: 1, trimestral: 3, semestral: 6, anual: 12 };
+    const wa = plansEl.dataset.wa || '';
+    const clp = (n: number) => '$' + Math.round(n).toLocaleString('es-CL');
+
+    const apply = (id: string, label: string) => {
+      plansEl.querySelectorAll<HTMLElement>('.plan').forEach((plan) => {
+        const prices = JSON.parse(plan.dataset.prices || '{}')[id];
+        if (!prices) return;
+        plan.querySelector('[data-amount]')!.textContent = clp(prices.perMonth);
+        const billing = plan.querySelector<HTMLElement>('[data-billing]')!;
+        if (months[id] === 1) {
+          billing.textContent = 'Pagas mes a mes.';
+        } else {
+          billing.innerHTML = `Pagas ${clp(prices.total)} cada ${months[id]} meses. <b>Ahorras ${clp(prices.saving)}.</b>`;
+        }
+        const text = `Hola, quiero contratar el plan ${plan.dataset.name} (${label}) de Reservas Online.`;
+        plan.querySelector<HTMLAnchorElement>('[data-cta]')!.href =
+          `https://wa.me/${wa}?text=${encodeURIComponent(text)}`;
+      });
+    };
+
+    periodsEl.querySelectorAll<HTMLButtonElement>('button').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        periodsEl.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+        btn.setAttribute('aria-pressed', 'true');
+        apply(btn.dataset.period!, btn.dataset.label!);
+      });
+    });
+  }
+</script>

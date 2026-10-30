@@ -1,0 +1,159 @@
+---
+import { site } from '../data/site';
+
+const times = ['09:00', '10:30', '12:00', '15:00', '16:30'];
+// Horas ya tomadas (columna, fila) para que el calendario se vea real.
+const taken = new Set(['0-1', '0-3', '1-0', '1-2', '1-4', '2-1', '3-0', '3-3', '4-2', '4-4']);
+const placeholderDays = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie'];
+---
+
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div class="hero__text">
+      <h1>Sistema de reservas online para profesionales y empresas</h1>
+      <p class="hero__lead">
+        Tus clientes eligen día y hora desde el celular, a cualquier hora del día. Tú recibes la reserva
+        confirmada en tu agenda y dejas de coordinar horas por mensajes.
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="#planes">Ver planes</a>
+        <a class="btn btn--ghost" href={site.demoUrl} rel="noopener">Probar la demo completa</a>
+      </div>
+      <p class="hero__price">Desde <strong>$12.000 al mes</strong> para hasta 3 profesionales.</p>
+    </div>
+
+    <div class="demo-wrap">
+    <div class="demo" id="demo" aria-label="Demo interactiva de reserva">
+      <div class="demo__top">
+        <div class="demo__avatar" aria-hidden="true">KR</div>
+        <div class="demo__who">
+          <strong>Kinesiología Rojas</strong>
+          <span>Sesión de 45 minutos. Elige tu hora.</span>
+        </div>
+      </div>
+
+      <div class="demo__days">
+        {
+          placeholderDays.map((d, c) => (
+            <div class="demo__col" data-col={c}>
+              <div class="demo__day">
+                <b data-num></b>
+                <span data-name>{d}</span>
+              </div>
+              {times.map((t, r) => (
+                <button
+                  type="button"
+                  class="slot"
+                  style={`--i:${c + r * 5}`}
+                  data-time={t}
+                  disabled={taken.has(`${c}-${r}`)}
+                  aria-pressed="false"
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="demo__foot" aria-live="polite">
+        <p class="demo__hint" data-state="idle">Prueba tocando una hora disponible.</p>
+
+        <div class="demo__pick" data-state="pick" hidden>
+          <p data-summary></p>
+          <button type="button" class="btn btn--primary" data-confirm>Reservar hora</button>
+        </div>
+
+        <div class="demo__done" data-state="done" hidden>
+          <span class="demo__check" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+              ><path d="M3 8.5l3.2 3L13 4.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg
+            >
+          </span>
+          <div>
+            <strong data-done-title>Reserva confirmada</strong>
+            <span>Así de simple lo ven tus clientes. </span>
+            <button type="button" class="demo__reset" data-reset>Probar otra hora</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chip chip--a" aria-hidden="true">
+      <span class="chip__icon chip__icon--ok"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 4.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span><b>Reserva confirmada</b><small>Llega al correo de tu cliente</small></span>
+    </div>
+    <div class="chip chip--b" aria-hidden="true">
+      <span class="chip__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
+      <span><b>Recordatorio enviado</b><small>El día antes de la hora</small></span>
+    </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const root = document.getElementById('demo');
+  if (root) {
+    // Los 5 próximos días hábiles a partir de hoy.
+    const days: Date[] = [];
+    const d = new Date();
+    while (days.length < 5) {
+      d.setDate(d.getDate() + 1);
+      const wd = d.getDay();
+      if (wd !== 0 && wd !== 6) days.push(new Date(d));
+    }
+    const short = new Intl.DateTimeFormat('es-CL', { weekday: 'short' });
+    const long = new Intl.DateTimeFormat('es-CL', { weekday: 'long', day: 'numeric', month: 'long' });
+    const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+    root.querySelectorAll<HTMLElement>('.demo__col').forEach((col, i) => {
+      const date = days[i];
+      col.querySelector('[data-num]')!.textContent = String(date.getDate());
+      col.querySelector('[data-name]')!.textContent = cap(short.format(date).replace('.', ''));
+    });
+
+    const states = {
+      idle: root.querySelector<HTMLElement>('[data-state="idle"]')!,
+      pick: root.querySelector<HTMLElement>('[data-state="pick"]')!,
+      done: root.querySelector<HTMLElement>('[data-state="done"]')!,
+    };
+    const summary = root.querySelector<HTMLElement>('[data-summary]')!;
+    const doneTitle = root.querySelector<HTMLElement>('[data-done-title]')!;
+    const slots = Array.from(root.querySelectorAll<HTMLButtonElement>('.slot'));
+    let selected: HTMLButtonElement | null = null;
+
+    const show = (name: keyof typeof states) => {
+      (Object.keys(states) as (keyof typeof states)[]).forEach((k) => {
+        states[k].hidden = k !== name;
+      });
+    };
+
+    const label = (btn: HTMLButtonElement) => {
+      const col = Number(btn.closest<HTMLElement>('.demo__col')!.dataset.col);
+      return `${cap(long.format(days[col]))}, ${btn.dataset.time}`;
+    };
+
+    slots.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        slots.forEach((s) => s.setAttribute('aria-pressed', 'false'));
+        btn.setAttribute('aria-pressed', 'true');
+        selected = btn;
+        summary.textContent = label(btn);
+        show('pick');
+      });
+    });
+
+    root.querySelector('[data-confirm]')!.addEventListener('click', () => {
+      if (!selected) return;
+      doneTitle.textContent = `Reserva confirmada: ${label(selected)}`;
+      selected.disabled = true;
+      selected.setAttribute('aria-pressed', 'false');
+      show('done');
+    });
+
+    root.querySelector('[data-reset]')!.addEventListener('click', () => {
+      selected = null;
+      show('idle');
+    });
+  }
+</script>
