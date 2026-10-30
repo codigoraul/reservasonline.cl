@@ -1,0 +1,20 @@
+---
+import { site, whatsappLink } from '../data/site';
+interface Props { text?: string; wa?: string }
+const { text = 'Elige tu plan y escríbenos. Si antes quieres ver cómo funciona, prueba la demo.', wa = 'Hola, quiero información de Reservas Online.' } = Astro.props;
+---
+
+<section class="cta">
+  <div class="wrap">
+    <div class="cta__box">
+      <div>
+        <h2>Empieza a recibir reservas esta semana</h2>
+        <p>{text}</p>
+      </div>
+      <div class="cta__actions">
+        <a class="btn btn--light" href={whatsappLink(wa)} rel="noopener">Contratar por WhatsApp</a>
+        <a class="btn btn--ghost" href={site.demoUrl} rel="noopener">Probar la demo completa</a>
+      </div>
+    </div>
+  </div>
+</section>

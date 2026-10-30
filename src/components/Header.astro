@@ -1,4 +1,5 @@
 ---
+import { servicios } from '../data/servicios';
 ---
 
 <header class="header">
@@ -6,12 +7,39 @@
     <a class="header__logo" href="/" aria-label="Reservas Online, inicio">
       <img src="/logo.png" alt="Reservas Online" width="560" height="214" />
     </a>
-    <nav class="header__nav" aria-label="Principal">
-      <a href="#para-quien">Para quién</a>
-      <a href="#como-funciona">Cómo funciona</a>
-      <a href="#planes">Planes</a>
-      <a href="#preguntas">Preguntas</a>
-      <a class="btn btn--primary" href="#planes">Ver planes</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu" id="nav-toggle">
+      <span class="sr">Menú</span><span class="nav-toggle__bars" aria-hidden="true"></span>
+    </button>
+    <nav class="header__nav" id="menu" aria-label="Principal">
+      <div class="dd">
+        <button class="dd__btn" type="button" aria-expanded="false">Servicios <span aria-hidden="true">▾</span></button>
+        <ul class="dd__menu">
+          {servicios.map((r) => <li><a href={`/servicios/${r.slug}`}>{r.nombre}</a></li>)}
+        </ul>
+      </div>
+      <a href="/#como-funciona">Cómo funciona</a>
+      <a href="/planes">Planes</a>
+      <a href="/preguntas-frecuentes">Preguntas</a>
+      <a class="btn btn--primary" href="/planes">Ver planes</a>
     </nav>
   </div>
 </header>
+
+<script>
+  const t = document.getElementById('nav-toggle');
+  const m = document.getElementById('menu');
+  t?.addEventListener('click', () => {
+    const open = m!.classList.toggle('is-open');
+    t.setAttribute('aria-expanded', String(open));
+  });
+  const b = document.querySelector('.dd__btn');
+  b?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const o = b.parentElement!.classList.toggle('is-open');
+    b.setAttribute('aria-expanded', String(o));
+  });
+  document.addEventListener('click', () => {
+    b?.parentElement?.classList.remove('is-open');
+    b?.setAttribute('aria-expanded', 'false');
+  });
+</script>

@@ -1,11 +1,29 @@
 ---
 import { site } from '../data/site';
+import { servicios } from '../data/servicios';
 ---
 
 <footer class="footer">
-  <div class="wrap footer__row">
-    <img src="/logo-dark.png" alt="Reservas Online" width="560" height="211" />
-    <p>
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <img src="/logo-dark.png" alt="Reservas Online" width="560" height="211" />
+        <p class="footer__about">Sistema de reservas online para profesionales, independientes y empresas en Chile.</p>
+      </div>
+      <nav aria-label="Servicios">
+        <h2>Servicios</h2>
+        <ul>{servicios.map((r) => <li><a href={`/servicios/${r.slug}`}>{r.nombre}</a></li>)}</ul>
+      </nav>
+      <nav aria-label="Sitio">
+        <h2>Sitio</h2>
+        <ul>
+          <li><a href="/planes">Planes y precios</a></li>
+          <li><a href="/preguntas-frecuentes">Preguntas frecuentes</a></li>
+          <li><a href={site.demoUrl} rel="noopener">Demo</a></li>
+        </ul>
+      </nav>
+    </div>
+    <p class="footer__legal">
       Un servicio de <a href={site.agency.url} rel="noopener">{site.agency.name}</a>. © 2026 Reservas Online.
     </p>
   </div>

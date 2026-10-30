@@ -6,6 +6,7 @@ import Pricing from '../components/Pricing.astro';
 import Footer from '../components/Footer.astro';
 import Icon from '../components/Icon.astro';
 import { site, whatsappLink } from '../data/site';
+import { servicios } from '../data/servicios';
 
 const audience = [
   {
@@ -134,10 +135,10 @@ const faqs = [
         </div>
         <dl class="feature-list">
           {
-            features.map(([ic, t, d]) => (
+            features.map(([ic, t, d], i) => (
               <div class="feature">
                 <span class="icon-tile"><Icon name={ic} /></span>
-                <dt>{t}</dt>
+                <dt><a href={`/servicios/${servicios[i].slug}`}>{t}</a></dt>
                 <dd>{d}</dd>
               </div>
             ))

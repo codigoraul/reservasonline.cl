@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Pricing from '../components/Pricing.astro';
+import Cta from '../components/Cta.astro';
+import Icon from '../components/Icon.astro';
+
+const incluye = [
+  ['clock', 'Reservas las 24 horas'],
+  ['users', 'Agenda por profesional'],
+  ['link', 'Enlace propio de reservas'],
+  ['timer', 'Servicios con duración'],
+  ['bell', 'Confirmación y recordatorios'],
+  ['refresh', 'Cambios y cancelaciones'],
+  ['calendarx', 'Bloqueos y vacaciones'],
+  ['phone', 'Sin instalar nada'],
+];
+---
+
+<Base
+  title="Planes y precios del sistema de reservas online | Reservas Online"
+  description="Planes mensual, trimestral, semestral y anual según cuántos profesionales atiendes. Desde $12.000 al mes, con todas las funciones incluidas."
+>
+  <Header />
+  <main id="contenido">
+    <section class="phero phero--plain">
+      <div class="wrap">
+        <p class="crumbs"><a href="/">Inicio</a> / Planes</p>
+        <h1>Planes y precios</h1>
+        <p class="phero__lead">Elige según cuántos profesionales atienden. Todas las funciones están en todos los planes.</p>
+      </div>
+    </section>
+    <Pricing />
+    <section class="section">
+      <div class="wrap">
+        <div class="section__head"><h2>Incluido en todos los planes</h2></div>
+        <ul class="inc">
+          {incluye.map(([i, t]) => <li><span class="icon-tile"><Icon name={i} /></span>{t}</li>)}
+        </ul>
+      </div>
+    </section>
+    <Cta />
+  </main>
+  <Footer />
+</Base>

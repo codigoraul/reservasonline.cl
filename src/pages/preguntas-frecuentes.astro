@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Cta from '../components/Cta.astro';
+import FaqList from '../components/FaqList.astro';
+import { faqsGenerales } from '../data/servicios';
+---
+
+<Base
+  title="Preguntas frecuentes sobre el sistema de reservas online | Reservas Online"
+  description="Respuestas sobre cómo funciona el sistema de reservas online: profesionales, pagos, cambios de plan, confirmaciones y demo."
+>
+  <Header />
+  <main id="contenido">
+    <section class="phero phero--plain">
+      <div class="wrap">
+        <p class="crumbs"><a href="/">Inicio</a> / Preguntas frecuentes</p>
+        <h1>Preguntas frecuentes</h1>
+        <p class="phero__lead">Lo que más nos consultan antes de contratar.</p>
+      </div>
+    </section>
+    <section class="section faq">
+      <div class="wrap"><FaqList items={faqsGenerales} /></div>
+    </section>
+    <Cta />
+  </main>
+  <Footer />
+</Base>
