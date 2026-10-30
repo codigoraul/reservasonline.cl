@@ -37,4 +37,5 @@ jobs:
           # Si falla la conexión segura, cambia ftps por ftp.
           protocol: ftps
           local-dir: ./dist/
-          server-dir: ${{ secrets.FTP_DIR || '/public_html/' }}
+          # La cuenta FTP ya entra directo a public_html: se sube a la raíz de la cuenta.
+          server-dir: ./
