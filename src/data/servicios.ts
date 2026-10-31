@@ -77,6 +77,7 @@ export type Servicio = (typeof servicios)[number];
 
 export const faqsGenerales = [
   ['¿Necesito saber de tecnología?', 'No. Defines tus servicios y horarios, y compartes tu enlace. Si prefieres, te acompañamos con la configuración inicial.'],
+  ['¿Sirve para profesionales de la salud?', 'Sí, para agendar y recibir reservas. No incluye ficha clínica ni datos clínicos de pacientes.'],
   ['¿Qué cuenta como profesional?', 'Cada persona que tiene agenda propia y recibe reservas. Quien solo administra o atiende el teléfono no cuenta.'],
   ['¿Puedo cambiar de plan más adelante?', 'Sí. Cuando tu equipo crezca puedes pasar a un plan con más profesionales. Escríbenos por WhatsApp y lo coordinamos.'],
   ['¿Cómo pago?', 'Al contratar te enviamos los datos de pago por WhatsApp. Puedes pagar mensual, trimestral, semestral o anual, y mientras más largo el periodo, menor el valor por mes.'],

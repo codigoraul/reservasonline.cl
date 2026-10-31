@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import Pricing from '../components/Pricing.astro';
+import Alcance from '../components/Alcance.astro';
 import Footer from '../components/Footer.astro';
 import Icon from '../components/Icon.astro';
 import { site, whatsappLink } from '../data/site';
@@ -62,6 +63,10 @@ const faqs = [
   {
     q: '¿Necesito saber de tecnología?',
     a: 'No. Defines tus servicios y horarios, y compartes tu enlace. Si prefieres, te acompañamos con la configuración inicial.',
+  },
+  {
+    q: '¿Sirve para profesionales de la salud?',
+    a: 'Sí, para agendar y recibir reservas. No incluye ficha clínica ni datos clínicos de pacientes.',
   },
   {
     q: '¿Qué cuenta como profesional?',
@@ -146,6 +151,8 @@ const faqs = [
         </dl>
       </div>
     </section>
+
+    <Alcance />
 
     <Pricing />
 
