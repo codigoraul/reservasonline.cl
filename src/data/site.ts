@@ -4,7 +4,7 @@ export const site = {
   url: 'https://reservasonline.cl',
   // Número de WhatsApp en formato internacional, sin "+" ni espacios.
   whatsapp: '56961765268',
-  demoUrl: 'https://disenopaginas.cl/reserva',
+  demoUrl: 'https://reservasonline.cl/demo-reservas/',
   agency: { name: 'DiseñoPaginas.cl', url: 'https://disenopaginas.cl' },
 };
 
