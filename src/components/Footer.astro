@@ -1,6 +1,6 @@
 ---
 import { site } from '../data/site';
-import { servicios } from '../data/servicios';
+import { rubros } from '../data/rubros';
 ---
 
 <footer class="footer">
@@ -10,9 +10,9 @@ import { servicios } from '../data/servicios';
         <img src="/logo-dark.png" alt="Reservas Online" width="560" height="211" />
         <p class="footer__about">Sistema de reservas online para profesionales, independientes y empresas en Chile.</p>
       </div>
-      <nav aria-label="Servicios">
-        <h2>Servicios</h2>
-        <ul>{servicios.map((r) => <li><a href={`/servicios/${r.slug}`}>{r.nombre}</a></li>)}</ul>
+      <nav aria-label="Reservas por rubro">
+        <h2>Reservas para tu rubro</h2>
+        <ul>{rubros.map((r) => <li><a href={`/${r.slug}`}>Reservas para {r.nombre.toLowerCase()}</a></li>)}</ul>
       </nav>
       <nav aria-label="Sitio">
         <h2>Sitio</h2>

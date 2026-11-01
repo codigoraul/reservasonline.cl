@@ -8,6 +8,7 @@ import Footer from '../components/Footer.astro';
 import Icon from '../components/Icon.astro';
 import { site, whatsappLink } from '../data/site';
 import { servicios } from '../data/servicios';
+import { rubros } from '../data/rubros';
 
 const audience = [
   {
@@ -110,6 +111,18 @@ const faqs = [
               </li>
             ))
           }
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="rubros">
+      <div class="wrap">
+        <div class="section__head">
+          <h2>Reservas online para tu rubro</h2>
+          <p>Mira cómo se ve la agenda en tu tipo de negocio.</p>
+        </div>
+        <ul class="chips">
+          {rubros.map((r) => <li><a href={`/${r.slug}`}>Reservas para {r.nombre.toLowerCase()}</a></li>)}
         </ul>
       </div>
     </section>
