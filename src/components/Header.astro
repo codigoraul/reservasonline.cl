@@ -1,5 +1,6 @@
 ---
 import { servicios } from '../data/servicios';
+import { rubros } from '../data/rubros';
 ---
 
 <header class="header">
@@ -11,10 +12,16 @@ import { servicios } from '../data/servicios';
       <span class="sr">Menú</span><span class="nav-toggle__bars" aria-hidden="true"></span>
     </button>
     <nav class="header__nav" id="menu" aria-label="Principal">
-      <div class="dd">
+      <div class="dd" data-label="Servicios">
         <button class="dd__btn" type="button" aria-expanded="false">Servicios <span aria-hidden="true">▾</span></button>
         <ul class="dd__menu">
           {servicios.map((r) => <li><a href={`/servicios/${r.slug}`}>{r.nombre}</a></li>)}
+        </ul>
+      </div>
+      <div class="dd" data-label="Rubros">
+        <button class="dd__btn" type="button" aria-expanded="false">Rubros <span aria-hidden="true">▾</span></button>
+        <ul class="dd__menu">
+          {rubros.map((r) => <li><a href={`/${r.slug}`}>{r.nombre}</a></li>)}
         </ul>
       </div>
       <a href="/#como-funciona">Cómo funciona</a>
@@ -32,14 +39,21 @@ import { servicios } from '../data/servicios';
     const open = m!.classList.toggle('is-open');
     t.setAttribute('aria-expanded', String(open));
   });
-  const b = document.querySelector('.dd__btn');
-  b?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const o = b.parentElement!.classList.toggle('is-open');
-    b.setAttribute('aria-expanded', String(o));
-  });
-  document.addEventListener('click', () => {
-    b?.parentElement?.classList.remove('is-open');
-    b?.setAttribute('aria-expanded', 'false');
-  });
+  const btns = document.querySelectorAll<HTMLButtonElement>('.dd__btn');
+  const closeAll = (except?: Element | null) => {
+    btns.forEach((x) => {
+      if (x.parentElement === except) return;
+      x.parentElement?.classList.remove('is-open');
+      x.setAttribute('aria-expanded', 'false');
+    });
+  };
+  btns.forEach((b) =>
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeAll(b.parentElement);
+      const o = b.parentElement!.classList.toggle('is-open');
+      b.setAttribute('aria-expanded', String(o));
+    })
+  );
+  document.addEventListener('click', () => closeAll());
 </script>

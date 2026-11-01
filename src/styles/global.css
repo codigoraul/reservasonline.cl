@@ -1251,7 +1251,7 @@ p {
   .header__nav a:not(.btn) { display: block !important; }
   .dd__menu { position: static; display: block; margin: .5rem 0 0; box-shadow: none; border: 0; padding: 0 0 0 .5rem; }
   .dd__btn { display: none; }
-  .dd::before { content: "Servicios"; font-weight: 600; color: var(--ink); }
+  .dd::before { content: attr(data-label); font-weight: 600; color: var(--ink); }
 }
 .feature dt a { color: inherit; text-decoration: none; }
 .feature dt a:hover { color: var(--indigo); }
